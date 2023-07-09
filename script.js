@@ -1,6 +1,6 @@
 let myLibrary = [
   {
-    title: "The Cat In The Hat",
+    title: "The Cat in the Hat",
     author: "Dr. Seuss",
     year: 1957,
     read: 'yes'
@@ -12,7 +12,25 @@ let myLibrary = [
     read: 'yes'
   },
   { 
-    title: "Green Eggs And Ham",
+    title: "Green Eggs and Ham too long for the title",
+    author: "Dr. Seuss",
+    year: 1960,
+    read: 'no'
+  },
+  {
+    title: "The Cat in the Hat",
+    author: "Dr. Seuss",
+    year: 1957,
+    read: 'yes'
+  },
+  {
+    title: "The Lorax",
+    author: "Dr. Seuss",
+    year: 1972,
+    read: 'yes'
+  },
+  { 
+    title: "Green Eggs and Ham too long for the title",
     author: "Dr. Seuss",
     year: 1960,
     read: 'no'
@@ -34,29 +52,34 @@ class Book {
 //     return `${this.title}, by ${this.author}, in ${this.pages}, ${readOrNot}`;
 // }
 
-const main = document.getElementById('main');
+const main = document.getElementById('shelf');
 
-for (let i = 0; i < myLibrary.length; i++) {
-    let title = myLibrary[i].title;
-    let  author = myLibrary[i].author;
-    let year = myLibrary[i].year;
-    let read = myLibrary[i].read;
-    console.log(title, author, year, read)
+myLibrary.forEach(book => {
+
     let bookCard = document.createElement('div');
-    bookCard.classList.add("card");
-    let cardTitle = document.createElement('p');
-    cardTitle.textContent = title;
+    bookCard.classList.add("book-card");
+    let cardTitle = document.createElement('h2');
+    cardTitle.classList.add("title");
+    cardTitle.textContent = book.title;
     let cardAuthor = document.createElement('p');
-    cardAuthor.textContent = author;
+    cardAuthor.classList.add("author");
+    cardAuthor.textContent = `by: ${book.author}`;
     let cardYear = document.createElement('p');
-    cardYear.textContent = year;
+    cardYear.classList.add("year");
+    cardYear.textContent = `published: ${book.year}`;
     let cardRead = document.createElement('p');
-    cardRead.textContent = read;
+    cardRead.classList.add("read");
+    cardRead.textContent = `read: ${book.read}`;
+    let cardReturn = document.createElement('p');
+    cardReturn.classList.add("return");
+    cardReturn.textContent = "RETURN BOOK";
 
     bookCard.appendChild(cardTitle);
     bookCard.appendChild(cardAuthor);
     bookCard.appendChild(cardYear);
     bookCard.appendChild(cardRead);
+    bookCard.appendChild(cardReturn);
+
     main.appendChild(bookCard);
 
-}
+})
