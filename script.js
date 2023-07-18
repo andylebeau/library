@@ -1,85 +1,111 @@
-let myLibrary = [
-  {
-    title: "The Cat in the Hat",
-    author: "Dr. Seuss",
-    year: 1957,
-    read: 'yes'
-  },
-  {
-    title: "The Lorax",
-    author: "Dr. Seuss",
-    year: 1972,
-    read: 'yes'
-  },
-  { 
-    title: "Green Eggs and Ham too long for the title",
-    author: "Dr. Seuss",
-    year: 1960,
-    read: 'no'
-  },
-  {
-    title: "The Cat in the Hat",
-    author: "Dr. Seuss",
-    year: 1957,
-    read: 'yes'
-  },
-  {
-    title: "The Lorax",
-    author: "Dr. Seuss",
-    year: 1972,
-    read: 'yes'
-  },
-  { 
-    title: "Green Eggs and Ham too long for the title",
-    author: "Dr. Seuss",
-    year: 1960,
-    read: 'no'
-  }
-];
+const shelf = document.querySelector('#shelf');
+let myLibrary = [];
 
-class Book {
-  constructor(title, author, year, read) {
-    this.title = title;
-    this.author = author;
-    this.year = year;
-    this.read = read;
-  }
+const date = new Date().toLocaleDateString()
+let returnDate = new Date()
+returnDate.setDate(returnDate.getDate() + 30);
+returnDate = returnDate.toLocaleDateString()
+
+function addLocalStorage() {
+    localStorage.setItem(
+        'libraryArchive',
+        JSON.stringify(myLibrary)
+    );
+    myLibrary = JSON.parse(localStorage.getItem('libraryArchive')) || [];
+    saveAndyPopulateShelf();
 }
 
-// Book.prototype.info = function() {
-//     let readOrNot = this.read == 'yes' ?
-//     'has been read' : 'not read yet';
-//     return `${this.title}, by ${this.author}, in ${this.pages}, ${readOrNot}`;
-// }
+function Book(title, author, checkOut, returnBy, read) {
+  this.title = title;
+  this.author = author;
+  this.checkOut = checkOut;
+  this.returnBy = returnBy;
+  this.read = read;
+}
 
-const main = document.getElementById('shelf');
+const formSubmit = document.querySelector("#new-book");
+formSubmit.addEventListener("submit", function(e) {
+    e.preventDefault();
+    addFormToLibrary();
+    formSubmit.reset();
+})
 
-myLibrary.forEach(book => {
+function addFormToLibrary() {
+    let title = document.querySelector("#title").value;
+    let author = document.querySelector("#author").value;
+    let read = document.querySelector("#read").value;
+    let newBook = new Book(title, author, date, returnDate, read);
+    myLibrary.push(newBook);
+    saveAndyPopulateShelf();
+}
+
+function addBook(book, cardNumber) {
 
     let bookCard = document.createElement('div');
+    bookCard.setAttribute('id', cardNumber)
     bookCard.classList.add("book-card");
+
     let cardTitle = document.createElement('h2');
     cardTitle.classList.add("title");
     cardTitle.textContent = book.title;
+
     let cardAuthor = document.createElement('p');
     cardAuthor.classList.add("author");
     cardAuthor.textContent = `by: ${book.author}`;
-    let cardYear = document.createElement('p');
-    cardYear.classList.add("year");
-    cardYear.textContent = `published: ${book.year}`;
+
+    let cardCheckOut = document.createElement('p');
+    cardCheckOut.classList.add("check-out");
+    cardCheckOut.textContent = `check out: ${date}`;
+
+    let cardReturnBy = document.createElement('p');
+    cardReturnBy.classList.add("return-by");
+    cardReturnBy.textContent = `return by: ${returnDate}`;
+
     let cardRead = document.createElement('p');
     cardRead.classList.add("read");
-    cardRead.textContent = `read: ${book.read}`;
+    cardRead.textContent = `${book.read}`;
+
     let cardReturn = document.createElement('p');
     cardReturn.classList.add("return");
     cardReturn.textContent = "RETURN BOOK";
 
     bookCard.appendChild(cardTitle);
     bookCard.appendChild(cardAuthor);
-    bookCard.appendChild(cardYear);
+    bookCard.appendChild(cardCheckOut);
+    bookCard.appendChild(cardReturnBy);
     bookCard.appendChild(cardRead);
     bookCard.appendChild(cardReturn);
 
-    main.appendChild(bookCard);
+    bookCard.querySelector(".read").addEventListener('click', (e) => {
+        if (book.read === 'Please return book') {
+            book.read = 'Read it again!';
+        }
+        else {book.read = 'Please return book'}
+        rePopulateShelf()
+    })
 
-})
+    bookCard.querySelector(".return").addEventListener('click', (e) => {
+        const index = e.target.parentElement.getAttribute('id')
+        removeCard(index);
+    })
+
+    shelf.appendChild(bookCard);
+    
+}
+
+function removeCard (i) {
+    myLibrary.splice(i, 1);
+    saveAndyPopulateShelf()
+}
+
+function rePopulateShelf() {
+    shelf.textContent = '';
+    myLibrary.map((b, i) => addBook(b, i))
+}
+
+function saveAndyPopulateShelf() {
+    localStorage.setItem('libraryArchive', JSON.stringify(myLibrary));
+    rePopulateShelf();
+}
+
+addLocalStorage();
