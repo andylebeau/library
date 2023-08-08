@@ -5,17 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="normalize.css"> -->
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script defer src="script.js"></script>
 </head>
 
 <body>
     <header>
         <h1>Local Library</h1>
-        <button>ADD BOOK</button>
+        <button id="open-form">ADD BOOK</button>
     </header>
-    <div id="form-container">
-        <form id="new-book" action="" method="get">
+    <div id="shelf"></div>
+    <dialog id="form-dialog">
+        <form id="new-book" action="" method="dialog">
             <h2>Check Out Book</h2>
             <label for="title"></label>
             <input type="text" id="title" name="title" placeholder="Book Title" autocomplete="off" required />
@@ -28,8 +30,7 @@
             </select>
             <input class="submit" type="submit" value="Borrow Book Now" />
         </form>
-    </div>
-    <div id="shelf"></div>
+    </dialog>
 
 </body>
 

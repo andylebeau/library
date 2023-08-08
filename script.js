@@ -1,3 +1,14 @@
+class Book {
+    constructor(title, author, checkOut, returnBy, read) {
+        this.title = title;
+        this.author = author;
+        this.checkOut = checkOut;
+        this.returnBy = returnBy;
+        this.read = read;
+    }
+}
+    
+    
 const shelf = document.querySelector('#shelf');
 let myLibrary = [];
 
@@ -15,13 +26,13 @@ function addLocalStorage() {
     saveAndyPopulateShelf();
 }
 
-function Book(title, author, checkOut, returnBy, read) {
-  this.title = title;
-  this.author = author;
-  this.checkOut = checkOut;
-  this.returnBy = returnBy;
-  this.read = read;
-}
+// function Book(title, author, checkOut, returnBy, read) {
+//   this.title = title;
+//   this.author = author;
+//   this.checkOut = checkOut;
+//   this.returnBy = returnBy;
+//   this.read = read;
+// }
 
 const formSubmit = document.querySelector("#new-book");
 formSubmit.addEventListener("submit", function(e) {
@@ -107,5 +118,23 @@ function saveAndyPopulateShelf() {
     localStorage.setItem('libraryArchive', JSON.stringify(myLibrary));
     rePopulateShelf();
 }
+
+const addBookBtn = document.getElementById("open-form");
+const dialog = document.getElementById('form-dialog')
+addBookBtn.addEventListener('click', () => {
+    dialog.showModal();
+})
+
+dialog.addEventListener("click", e => {
+    const dialogDimensions = dialog.getBoundingClientRect()
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      dialog.close()
+    }
+  })
 
 addLocalStorage();
